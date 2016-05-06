@@ -1,0 +1,90 @@
+Using Go on Raspberry Pi
+And a little rust as well
+10 May 2016
+Tags: golang, raspberry pi
+
+Darrel Herbst
+DramaFever
+dherbst@gmail.com
+https://github.com/dherbst
+@darrelherbst
+
+* You're going to need a raspberry pi
+Canakit.com has a kit that has everything you need (except the lcd board in this talk)
+.image 300-PI3-STR32.png
+
+* Set up your pi, and put it on your network
+You can then ssh into it
+
+    ssh pi@darpi
+    password: raspberry
+    pi@darpi:~ $
+
+* Make cross compiling easy, use docker
+1. Set up docker machine
+2. docker pull golang:1.6 (or latest)
+3. profit
+
+* Let's build something simple for raspberry pi
+
+.code src/hello/hello.go
+
+* Now compile the simple hello
+
+makefile looks like this:
+
+    GOOS=linux
+    GOARCH=arm
+
+    hello: src/hello/hello.go
+    	docker run -it --rm -v $(PWD):/darpi -w /darpi -e GOOS=${GOOS} -e GOARCH=${GOARCH} \
+          golang:1.6 go build src/hello/hello.go
+
+sftp that to the raspi
+
+    sftp pi@darpi
+    put hello
+
+Back in the shell
+
+    pi@darpi:~ $ file hello
+    hello: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), statically linked, not stripped
+
+* Run that hello world party
+
+    pi@darpi:~ $ ./hello
+
+
+    Hello GoLangPhilly!
+
+
+    pi@darpi:~ $
+
+* So now let's oxidize on the pi
+I mean rust, arf arf ha!
+
+Is there an easy to get docker image to cross compile rust?
+
+If you wanted to cross compile rust you would do something like this:
+
+   $ rustc --target=arm-unknown-linux-gnueabihf  -C linker=arm-linux-gnueabihf-gcc hello.rs
+
+I couldn't get that to work with the current nightlies.  So we'll pull it directly to the pi:
+
+   darpi $ curl -O http://static.rust-lang.org/dist/rust-nightly-arm-unknown-linux-gnueabihf.tar.gz
+
+   pi@darpi:~ $ rustc hello.rs
+   pi@darpi:~ $ ./hello
+   Hello golangphilly!
+
+hello.rs
+.code rust/hello.rs
+
+
+* Let's look at 20x4 LCD display
+
+Data sheet https://cdn-shop.adafruit.com/datasheets/TC2004A-01.pdf
+
+The pins are detailed in this table:
+
+.image pins.png
