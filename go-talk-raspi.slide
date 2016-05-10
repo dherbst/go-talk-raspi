@@ -14,16 +14,19 @@ Canakit.com has a kit that has everything you need (except the lcd board in this
 .image 300-PI3-STR32.png
 
 * Set up your pi, and put it on your network
+It comes with an sd card that has raspbian (a linux distro) that runs on the pi.  You can install go and rust on it.  It comes with python and a nice graphical UI. It's a full computer you could develop on it if you really wanted to.
+
 You can then ssh into it
 
     ssh pi@darpi
     password: raspberry
     pi@darpi:~ $
 
-* Make cross compiling easy, use docker
+* Make cross compiling easy, use docker on osx/linux
+
 1. Set up docker machine
 2. docker pull golang:1.6 (or latest)
-3. profit
+3. I use a makefile for profit
 
 * Let's build something simple for raspberry pi
 
@@ -60,6 +63,10 @@ Back in the shell
 
     pi@darpi:~ $
 
+
+< demo here >
+
+
 * So now let's oxidize on the pi
 I mean rust, arf arf ha!
 
@@ -79,6 +86,39 @@ I couldn't get that to work with the current nightlies.  So we'll pull it direct
 
 hello.rs
 .code rust/hello.rs
+
+
+* Raspberry Pi has GPIO
+GPIO is the general purpose input/output pins.
+
+   go get -d -u github.com/hybridgroup/gobot/...
+   go install github.com/hybridgroup/gobot/platforms/raspi
+
+Let's make sure we can blink an led connected to BCM pin GPIO21
+
+Hint: it doesn't work with the BCM numbers, use the pin numbers with gobot
+
+* blink.go
+
+.code src/blink/blink.go
+
+* blink.go continued
+
+.code src/blink/blink2.go
+
+* Demo blink
+
+   make bbuild
+   scp blink pi@darpi:/home/pi
+   ssh pi@darpi
+   sudo ./blink
+
+* Ok - how do we control that fancy 20x4 display?
+
+Same concept as blink, but we're going to push data up.
+
+.image gpiocard.jpg 400 600
+
 
 
 * Let's look at 20x4 LCD display

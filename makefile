@@ -15,4 +15,7 @@ get:
 	docker run -it --rm -v $(PWD):/darpi -w /darpi golang:1.6 go get src/darpi/.go
 
 build:
-	docker run -it --rm -v $(PWD):/darpi -w /darpi -e GOOS=${GOOS} -e GOARCH=${GOARCH} golang:1.6 go build src/darpi/hello.go
+	docker run -it -e GOPATH=/darpi --rm -v $(PWD):/darpi -w /darpi -e GOOS=${GOOS} -e GOARCH=${GOARCH} golang:1.6 go build src/darpi/darpi.go
+
+bblink:
+	docker run -it -e GOPATH=/darpi --rm -v $(PWD):/darpi -w /darpi -e GOOS=${GOOS} -e GOARCH=${GOARCH} golang:1.6 go build src/blink/blink.go
