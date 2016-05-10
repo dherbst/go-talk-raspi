@@ -128,3 +128,26 @@ Data sheet https://cdn-shop.adafruit.com/datasheets/TC2004A-01.pdf
 The pins are detailed in this table:
 
 .image pins.png
+
+* Wire up the 16 pin lcd to the GPIO on the breadboard
+
+.image wiring.png
+
+
+* On the previous slide, there are 8 bits for the data byte.
+The example I first looked at, only used the lcd board in 4-bit mode.
+
+1. Send the high 4 bits
+2. send the low 4 bits
+
+Let's look at the code, and then do a demo...
+
+* Rust blinky
+
+Take a look at https://github.com/rust-embedded/rust-sysfs-gpio
+
+.code rust/gpio/src/main.rs
+
+* Demo rust blink!
+
+    cargo build

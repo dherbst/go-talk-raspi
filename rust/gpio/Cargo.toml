@@ -1,0 +1,8 @@
+[package]
+name = "blink"
+version = "0.0.1"
+authors = ["Darrel Herbst <dherbst@gmail.com>"]
+
+
+[dependencies]
+sysfs_gpio = "0.4"
