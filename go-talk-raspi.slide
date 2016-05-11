@@ -113,13 +113,21 @@ Hint: it doesn't work with the BCM numbers, use the pin numbers with gobot
    ssh pi@darpi
    sudo ./blink
 
+* Rust blinky
+
+Take a look at https://github.com/rust-embedded/rust-sysfs-gpio
+
+.code rust/gpio/src/main.rs
+
+* Demo rust blink!
+
+    cargo build
+
 * Ok - how do we control that fancy 20x4 display?
 
 Same concept as blink, but we're going to push data up.
 
 .image gpiocard.jpg 400 600
-
-
 
 * Let's look at 20x4 LCD display
 
@@ -142,12 +150,22 @@ The example I first looked at, only used the lcd board in 4-bit mode.
 
 Let's look at the code, and then do a demo...
 
-* Rust blinky
+* darpi.go the go code to control the 20x4 lcd
 
-Take a look at https://github.com/rust-embedded/rust-sysfs-gpio
+.code src/darpi/darpi.go /sec1/,/endsec1/
 
-.code rust/gpio/src/main.rs
+.code src/darpi/darpi.go /createpins/,/endcreatepins/
 
-* Demo rust blink!
+* darpi.go send strings
 
-    cargo build
+When you send a string, you need to send it character by character breaking each character into 4 bit sections
+
+.code src/darpi/darpi.go /sendstring/,/endsendstring/
+
+* send the high bits for a character
+
+.code src/darpi/darpi.go /lcdbyte1/,/endlcdbyte1/
+
+* Toggle enable, and then send low bits
+
+.code src/darpi/darpi.go /endlcdbyte1/,/endlcdbyte2/

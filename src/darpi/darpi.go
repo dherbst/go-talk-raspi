@@ -1,5 +1,6 @@
 package main
 
+// sec1
 import (
 	"fmt"
 	"github.com/hybridgroup/gobot"
@@ -7,6 +8,8 @@ import (
 	"github.com/hybridgroup/gobot/platforms/raspi"
 	"time"
 )
+
+// endsec1
 
 const (
 	E_DELAY = 500000 // 0.0005 seconds
@@ -47,6 +50,7 @@ func main() {
 
 	r := raspi.NewRaspiAdaptor("raspi")
 
+	// createpins
 	pins := &Pins{}
 
 	pins.E = gpio.NewDirectPinDriver(r, "e", LCD_E)
@@ -56,6 +60,7 @@ func main() {
 	pins.D6 = gpio.NewDirectPinDriver(r, "d6", LCD_D6)
 	pins.D7 = gpio.NewDirectPinDriver(r, "d7", LCD_D7)
 	pins.BackLight = gpio.NewDirectPinDriver(r, "backlight", LED_ON)
+	// endcreatepins
 
 	work := func() {
 		fmt.Printf("Doing work\n")
@@ -69,10 +74,12 @@ func main() {
 		pins.BackLight.DigitalWrite(1)
 		time.Sleep(1000 * 1000 * 1000)
 
+		// sendstring
 		lcdString(pins, "Hello GoLangPhilly!", LCD_LINE_1, 1)
 		lcdString(pins, "Hello DramaFever!", LCD_LINE_2, 1)
 		lcdString(pins, "Are you having fun!", LCD_LINE_3, 1)
 		lcdString(pins, "I hope so!", LCD_LINE_4, 1)
+		// endsendstring
 
 		fmt.Println("Exiting work")
 	}
@@ -115,6 +122,8 @@ func lcdToggleEnable(pins *Pins) {
 	time.Sleep(E_DELAY)
 }
 
+// lcdbyte1
+
 // lcdByte sends byte to data pins.  bits = data, mode=true for character, false for command
 func lcdByte(pins *Pins, bits int, mode byte) {
 
@@ -139,6 +148,8 @@ func lcdByte(pins *Pins, bits int, mode byte) {
 		pins.D7.DigitalWrite(1)
 	}
 
+	//endlcdbyte1
+
 	// toggle enable
 	lcdToggleEnable(pins)
 
@@ -162,6 +173,8 @@ func lcdByte(pins *Pins, bits int, mode byte) {
 	}
 
 	lcdToggleEnable(pins)
+
+	// endlcdbyte2
 }
 
 func lcdString(pins *Pins, message string, line int, style int) {
